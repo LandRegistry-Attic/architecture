@@ -25,7 +25,7 @@ Drawings and other artefacts to explain the architecture of the concept.
 ![Environments](sprint0/environments.jpg)
 
 ### Data Migration
-![Data migration](sprint0/migration.jpg)
+![Data migration](sprint1/migrate-register.jpg)
 
 ### Vision
 
