@@ -19,13 +19,16 @@ Drawings and other artefacts to explain the architecture of the concept.
 ### Search
 ![Search](sprint1/search.jpg)
 
+### Data Migration
+![Data migration](sprint1/migrate-register.jpg)
+
 ## Sprint 0
 
 ### Environments and the system of record
 ![Environments](sprint0/environments.jpg)
 
 ### Data Migration
-![Data migration](sprint1/migrate-register.jpg)
+![Data migration](sprint0/migration.jpg)
 
 ### Vision
 
