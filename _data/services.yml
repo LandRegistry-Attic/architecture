@@ -1,0 +1,65 @@
+Production:
+  - name: "system-of-record"
+    github: "https://github.com/LandRegistry/system-of-record"
+    heroku: "lr-system-of-record"
+    url: "lr-system-of-record.herokuapp.com/"
+    port: 8000
+    tech: [python, flask]
+    dependencies: [postgres, redis]
+
+  - name: "mint"
+    github: "https://github.com/LandRegistry/mint"
+    heroku: "lr-mint"
+    url: "lr-mint.herokuapp.com/"
+    port: 8001
+    tech: [python, flask]
+    dependencies: [system-of-record]
+
+  - name: "casework-frontend"
+    github: "https://github.com/LandRegistry/casework-frontend"
+    heroku: "lr-casework-frontend"
+    url: "casework.landregistryconcept.co.uk"
+    port: 8004
+    tech: [python, flask]
+    dependencies: [mint]
+
+  - name: "property-frontend"
+    github: "https://github.com/LandRegistry/property-frontend"
+    heroku: "lr-property-frontend"
+    url: "www.gov.uk.landregistryconcept.co.uk"
+    port: 8002
+    tech: [python, flask]
+    dependencies: [search-api]
+
+  - name: "service-frontend"
+    github: "https://github.com/LandRegistry/service-frontend"
+    heroku: "lr-service-frontend"
+    url: "lr-service-frontend.herokuapp.com"
+    port: 8007
+    tech: [python, flask]
+    dependencies: [search-api]
+
+  - name: "search-api"
+    github: "https://github.com/LandRegistry/search-api"
+    heroku: "lr-search-api"
+    url: "lr-search-api.herokuapp.com"
+    port: 8003
+    tech: [python, flask]
+    dependencies: [elastic-search]
+
+  - name: "the-feeder"
+    github: "https://github.com/LandRegistry/the-feeder"
+    heroku: "lr-feeder-app"
+    url:
+    port:
+    tech: [python]
+    dependencies: [redis]
+
+Development:
+  - name: "elastic-search-server"
+    github: "https://github.com/LandRegistry/elastic-search-server"
+    heroku:
+    url:
+    port: 9200
+    tech: [java]
+    dependencies: [redis]

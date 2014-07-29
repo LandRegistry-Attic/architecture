@@ -1,0 +1,9 @@
+# Site settings
+title: "Alpha Architecture Dashboard"
+description: "This dashboard contains details about the services that form part of the Alpha"
+baseurl: "/architecture"
+url: "localhost:4000"
+
+# Build settings
+markdown: kramdown
+permalink: pretty

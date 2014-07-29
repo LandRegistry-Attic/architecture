@@ -1,11 +1,47 @@
-<html>
+---
+layout: default
+---
 
-  <head>
-  </head>
-  <body>
+{% for environment in site.data.services %}
 
-      <h1>Land Registry Alpha Architecture</h1>
+<div>
 
-  </body>
+  <h1>{{ environment[0] }} Services</h1>
 
-</html>
+  <br>
+
+  <table class="table table-striped table-bordered">
+    <tr>
+      <th>Service name</th>
+      <th>Github</th>
+      <th>Heroku</th>
+      <th>URL</th>
+      <th>Port</th>
+      <th>Tech</th>
+      <th>Dependencies</th>
+    </tr>
+
+    {% for service in environment[1] %}
+      <tr>
+        <td>{{ service.name }}</td>
+        <td>{{ service.github }}</td>
+        <td>{{ service.heroku }}</td>
+        <td>{{ service.url }}</td>
+        <td>{{ service.port }}</td>
+        <td>
+          {% for tech in service.tech %}
+            {{ tech }} <br>
+          {% endfor %}
+        </td>
+        <td>
+          {% for dep in service.dependencies %}
+            {{ dep }} <br>
+          {% endfor %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+
+</div>
+
+{% endfor %}
