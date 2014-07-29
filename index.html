@@ -2,46 +2,52 @@
 layout: default
 ---
 
-{% for environment in site.data.services %}
+<div class="col-md-5 col-md-offset-1">
 
-<div>
-
-  <h1>{{ environment[0] }} Services</h1>
+  <h2>The Architecture So Far</h2>
 
   <br>
 
-  <table class="table table-striped table-bordered">
-    <tr>
-      <th>Service name</th>
-      <th>Github</th>
-      <th>Heroku</th>
-      <th>URL</th>
-      <th>Port</th>
-      <th>Tech</th>
-      <th>Dependencies</th>
-    </tr>
+  <p>
+    The image to the right is an overview of what the Alpha team has built to date.
+    For more detail about these services please visit the <a href="/production">production</a> page.
+  </p>
 
-    {% for service in environment[1] %}
-      <tr>
-        <td>{{ service.name }}</td>
-        <td><a href="{{ service.github }}">{{ service.github }}</a></td>
-        <td>{{ service.heroku }}</td>
-        <td><a href="{{ service.url }}">{{ service.url }}</a></td>
-        <td>{{ service.port }}</td>
-        <td>
-          {% for tech in service.tech %}
-            {{ tech }} <br>
-          {% endfor %}
-        </td>
-        <td>
-          {% for dep in service.dependencies %}
-            {{ dep }} <br>
-          {% endfor %}
-        </td>
-      </tr>
-    {% endfor %}
-  </table>
+  <p>The flow through the services is as follows:</p>
 
+  <p style="padding:10px">
+    <i>
+      A caseworker types in the details of a title using the casework-frontend.
+      This creates a title in json format that is posted to the mint.
+      The mint hashes and signs the title and posts it to the system of record.
+      The system of record stores the title but also puts a copy of the title on to a queue.
+      The feeder picks up the title from the queue and creates a public view of the title and posts it to the search-api.
+      The search-api stores the public title in an elastic search server.
+      The property-frontend gets and displays information from the search-api for a requested title.
+    </i>
+  </p>
+
+  <p>
+    For more detail about the applications we built to support the development of these services
+    please visit the <a href="/development">development</a> page.
+  </p>
+
+  <br>
+
+  <h2>Service Naming Conventions</h2>
+
+  <br>
+
+  <p>
+    The github repository should be the name of the service i.e. mint.<br>
+    If the service is user facing then it should be have '-frontend' at the end
+    of it's name i.e. property-frontend. <br>
+    The Heroku app name should be 'lr-' followed by the service name i.e. lr-mint.
+  </p>
 </div>
 
-{% endfor %}
+<div id="overview-image" class="col-md-5">
+
+  <img style="width:100%;height:650px;" src="/images/end-of-sprint.jpg"/>
+
+</div>
