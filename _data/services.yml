@@ -50,7 +50,7 @@ Production:
   - name: "the-feeder"
     github: "https://github.com/LandRegistry/the-feeder"
     heroku: "lr-feeder-app"
-    url:
+    url: 
     port:
     tech: [python]
     dependencies: [redis]
@@ -58,8 +58,40 @@ Production:
 Development:
   - name: "elastic-search-server"
     github: "https://github.com/LandRegistry/elastic-search-server"
-    heroku:
-    url:
+    heroku: "n/a"
+    url: "localhost:9200"
     port: 9200
     tech: [java]
-    dependencies: [redis]
+    dependencies: []
+
+  - name: "test-dashboard"
+    github: "https://github.com/LandRegistry/test-dashboard"
+    heroku: "lr-test-dashboard"
+    url: "lr-test-dashboard.herokuapp.com"
+    port: 7357
+    tech: [python flask]
+    dependencies: [travis]
+
+  - name: "build-dashboard"
+    github: "https://github.com/LandRegistry/build-dashboard"
+    heroku: "lr-build-dashboard"
+    url: "lr-build-dashboard.herokuapp.com"
+    port: 8888
+    tech: [python flask]
+    dependencies: [travis]
+
+  - name: "pull-dashboard"
+    github: "https://github.com/LandRegistry/pull-dashboard"
+    heroku: "lr-pull-dashboard"
+    url: "lr-pull-dashboard.herokuapp.com"
+    port: 8888
+    tech: [python flask]
+    dependencies: [github]
+
+  - name: "team-dashboard"
+    github: "https://github.com/LandRegistry/team-dashboard"
+    heroku: "lr-team-dashboard"
+    url: "team-dashboard.landregistryconcept.co.uk"
+    port: 5000
+    tech: [python flask]
+    dependencies: []

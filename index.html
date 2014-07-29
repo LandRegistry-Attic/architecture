@@ -24,9 +24,9 @@ layout: default
     {% for service in environment[1] %}
       <tr>
         <td>{{ service.name }}</td>
-        <td>{{ service.github }}</td>
+        <td><a href="{{ service.github }}">{{ service.github }}</a></td>
         <td>{{ service.heroku }}</td>
-        <td>{{ service.url }}</td>
+        <td><a href="{{ service.url }}">{{ service.url }}</a></td>
         <td>{{ service.port }}</td>
         <td>
           {% for tech in service.tech %}
