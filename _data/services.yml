@@ -1,4 +1,4 @@
-Production:
+production:
   - name: "system-of-record"
     github: "https://github.com/LandRegistry/system-of-record"
     heroku: "lr-system-of-record"
@@ -37,7 +37,7 @@ Production:
     url: "lr-service-frontend.herokuapp.com"
     port: 8007
     tech: [python, flask]
-    dependencies: [search-api]
+    dependencies: [search-api, postgres]
 
   - name: "search-api"
     github: "https://github.com/LandRegistry/search-api"
@@ -50,12 +50,12 @@ Production:
   - name: "the-feeder"
     github: "https://github.com/LandRegistry/the-feeder"
     heroku: "lr-feeder-app"
-    url: 
+    url:
     port:
     tech: [python]
     dependencies: [redis]
 
-Development:
+development:
   - name: "elastic-search-server"
     github: "https://github.com/LandRegistry/elastic-search-server"
     heroku: "n/a"
