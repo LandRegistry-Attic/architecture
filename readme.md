@@ -10,11 +10,11 @@ http://landregistry.github.io/architecture/
 To start this service locally you will need to install Jekyll:
 
 ```
-sudo gem install Jekyll
+$ sudo gem install jekyll
 ```
 
 The start the service:
 
 ```
-Jekyll serve --baseurl '' --watch
+$ jekyll serve --baseurl '' --watch
 ```
