@@ -2,52 +2,276 @@
 layout: default
 ---
 
-<div class="col-md-5 col-md-offset-1">
+<style>
 
-  <h2>The Architecture So Far</h2>
+.link {
+  stroke: #ccc;
+}
 
-  <br>
+.node text {
+  pointer-events: none;
+  font: 10px sans-serif;
+}
 
-  <p>
-    The image to the right is an overview of what the Alpha team has built to date.
-    For more detail about these services please visit the <a href="{{ site.baseurl }}/production">production</a> page.
-  </p>
+.ttip {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  -moz-border-radius:3px;
+  border-radius: 3px;
+  border: 2px solid #DDD;
+  background: #fff;
+  opacity: 1;
+  color: #000;
+  padding: 10px;
+  width: 450px;
+  font-size: 15px;
+  z-index: 120;
+}
 
-  <p>The flow through the services is as follows:</p>
+</style>
 
-  <p style="padding:10px">
-    <i>
-      A caseworker types in the details of a title using the casework-frontend.
-      This creates a title in json format that is posted to the mint.
-      The mint hashes and signs the title and posts it to the system of record.
-      The system of record stores the title but also puts a copy of the title on to a queue.
-      The feeder picks up the title from the queue and creates a public view of the title and posts it to the search-api.
-      The search-api stores the public title in an elastic search server.
-      The property-frontend gets and displays information from the search-api for a requested title.
-    </i>
-  </p>
+<div class="row">
 
-  <p>
-    For more detail about the applications we built to support the development of these services
-    please visit the <a href="{{ site.baseurl }}/development">development</a> page.
-  </p>
+  <div class="col-md-10 col-md-offset-1">
 
-  <br>
+    <h2>Current Architecture</h2>
 
-  <h2>Service Naming Conventions</h2>
+    <script src="{{ site.baseurl }}/js/d3-v3-min.js"></script>
+    <script type="text/javascript" src="{{ site.baseurl }}/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ site.baseurl }}/js/bootstrap.min.js"></script>
+    <script>
 
-  <br>
+    function showTip(d,i) {
 
-  <p>
-    The github repository should be the name of the service i.e. mint.<br>
-    If the service is user facing then it should be have '-frontend' at the end
-    of it's name i.e. property-frontend. <br>
-    The Heroku app name should be 'lr-' followed by the service name i.e. lr-mint.
-  </p>
+      // Hover over code
+      $('<div class="ttip"></div>')
+        .text(d.name)
+        .append('<hr>')
+        .append('<p>Source code:  ' + d.github + '</p>')
+        .append('<p>Technology:  ' + d.tech + '</p>')
+        .append('<p>Dependencies:  ' + d.dep + '</p>')
+        .appendTo('body');
+
+      $('#tooltiptable').attr('class', 'table');
+
+
+      $('.ttip').fadeIn('slow');
+    }
+
+    function removeTip() {
+
+      // Hover out code
+      $('.ttip').remove();
+
+    }
+
+    var coordinates = [0,0]; //mouse coordinates for node tooltip position
+
+    d3.select('html') // Selects the 'html' element
+      .on('mousemove', function()
+        {
+
+          // Gets the mouse coordinates with respect to the top of the page
+          //This is required for the position of the tooltip for the nodes
+          coordinates = d3.mouse(this);
+        });
+
+    //mouse over event for a node
+    function mouseMove() {
+
+      //position the tooltip near to the mouse position
+      $('.ttip').css({ top: coordinates[1] + 10, left: coordinates[0] + 20 })
+
+    }
+
+    //on click event for a node
+    function onNodeClick(d) {
+
+      window.location = d.github;
+
+    };
+
+    var json = {"nodes": [], "links": []};
+
+    // add nodes to json
+    {% for service in site.data.services.production %}
+
+      var node = {};
+
+      node["name"] = "{{ service.name }}";
+      node["no"] = {{ forloop.index0 }};
+      node["github"] = "{{ service.github }}";
+      node["url"] = "{{ service.url }}";
+      node["port"] = "{{ service.port }}";
+      node["type"] = "{{ service.type }}";
+      node["heroku"] = "{{ service.heroku }}";
+
+      var tech = "";
+
+      {% for tech in service.tech %}
+        tech += "{{ tech }} "
+      {% endfor %}
+
+      node["tech"] = tech;
+
+      var dep = [];
+
+      {% for dep in service.dependencies %}
+        dep.push("{{ dep }}");
+      {% endfor %}
+
+      node["dep"] = dep;
+
+      json.nodes.push(node);
+
+    {% endfor %}
+
+    var serviceIndex = -1;
+
+    //add links to json
+    {% for service in site.data.services.production %}
+
+      serviceIndex++;
+
+      {% for dep in service.dependencies %}
+
+        //find node for dependency
+        json.nodes.forEach(function(obj, i){
+
+          if (obj.name == '{{ dep }}') {
+
+            var link = {};
+
+            link["source"] = serviceIndex;
+            link["target"] = i;
+            link["value"] = 1;
+
+            json.links.push(link);
+
+          }
+
+        });
+
+      {% endfor %}
+
+    {% endfor %}
+
+    var width = 1000,
+        height = 600
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    var force = d3.layout.force()
+        .gravity(0)
+        .distance(100)
+        .charge(0)
+        .size([width, height]);
+
+    force
+        .nodes(json.nodes)
+        .links(json.links)
+        .start();
+
+    var link = svg.selectAll(".link")
+        .data(json.links)
+      .enter().append("line")
+        .attr("class", "link");
+
+    var node = svg.selectAll(".node")
+        .data(json.nodes)
+        .enter().append("g")
+        .attr("class", "node")
+        .call(force.drag);
+
+    node.append("image")
+        .attr("xlink:href", function(d) { return "{{ site.baseurl }}/images/" + d.type + ".png"} )
+        .attr("x", -45)
+        .attr("y", -25)
+        .attr("width", 50)
+        .attr("height", 50);
+
+    node.append("text")
+        .attr("dx", 12)
+        .attr("dy", ".35em")
+        .text(function(d) { return d.name });
+
+    node.on("mouseover", showTip)
+        .on("mouseout", removeTip)
+        .on("mousemove", mouseMove)
+        .on("click", onNodeClick)
+
+
+    force.on("tick", function() {
+      link.attr("x1", function(d) { return d.source.x; })
+          .attr("y1", function(d) { return d.source.y; })
+          .attr("x2", function(d) { return d.target.x; })
+          .attr("y2", function(d) { return d.target.y; });
+
+      node.attr('y', function(d) {
+          if (d.name.indexOf('frontend') > 0)
+              { d.y = 100 }
+          else if (d.name == 'system-of-record')
+              { d.y = 500 }
+          else {
+              return d.y;
+            };
+          })
+
+      node.attr('x', function(d) {
+
+            switch(d.name) {
+              case "property-frontend":
+                  d.x = 600
+                  break;
+              case "casework-frontend":
+                  d.x = 300
+                  break;
+              case "service-frontend":
+                  d.x = 900
+                  break;
+              case "system-of-record":
+                  d.x = 600
+                  break;
+              default:
+                  d.x;
+                }
+
+            return d.x;
+          });
+
+      node.attr("transform", function(d) {
+                      return "translate(" + d.x + "," + d.y + ")";
+                } //function
+               ); //attr
+            }); //force.on
+
+    </script>
+
+  </div>
+
 </div>
 
-<div id="overview-image" class="col-md-5">
+<div class="row">
 
-  <img style="width:100%;height:650px;" src="{{ site.baseurl }}/images/end-of-sprint.jpg"/>
+  <div class="col-md-10 col-md-offset-1">
+    <p>
+      The diagram above is a dynamically drawn view of the architecture so far. The aim is to
+      be able to automatically pull information about the architecture from the services themselves,
+      as well as the environments in which they run.
+    </p>
+
+    <p>
+      If you hover over any of the services you will be presented with a summary of that service.
+
+      If you click on a service you will be taken to a page that contains detailed information about that service.
+    </p>
+
+    <p>
+      For more detail about these services in their environments please visit the <a href="{{ site.baseurl }}/service/summary">service summary</a> page.
+    </p>
+  </div>
 
 </div>

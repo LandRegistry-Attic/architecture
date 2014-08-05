@@ -6,7 +6,7 @@ layout: default
 
   <div class="col-md-10 col-md-offset-1">
 
-    <h1>Production Services</h1>
+    <h1>Dashboards</h1>
 
     <br>
 
@@ -21,7 +21,7 @@ layout: default
         <th>Dependencies</th>
       </tr>
 
-      {% for service in site.data.services.production %}
+      {% for service in site.data.services.development %}
         <tr>
           <td>{{ service.name }}</td>
           <td><a href="{{ service.github }}">{{ service.github }}</a></td>
@@ -43,4 +43,5 @@ layout: default
     </table>
 
   </div>
-<div>
+
+</div>

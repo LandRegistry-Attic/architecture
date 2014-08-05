@@ -1,0 +1,31 @@
+---
+layout: default
+---
+
+<div class="row">
+
+  <div class="col-md-10 col-md-offset-1">
+
+    <h1>Service Summary</h1>
+
+    <br>
+
+    <table class="table table-striped table-bordered">
+      <tr>
+        <th>Service name</th>
+        <th>Dev</th>
+        <th>Preview</th>
+        <th>Staging</th>
+        <th>Production</th>
+      </tr>
+
+      {% for service in site.data.services.production %}
+        <tr>
+          <td>{{ service.name }}</td>
+        </tr>
+      {% endfor %}
+
+    </table>
+  </div>
+
+</div>

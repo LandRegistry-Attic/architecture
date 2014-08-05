@@ -1,13 +1,15 @@
 production:
   - name: "system-of-record"
+    type: "system-of-record"
     github: "https://github.com/LandRegistry/system-of-record"
     heroku: "lr-system-of-record"
     url: "lr-system-of-record.herokuapp.com/"
     port: 8000
     tech: [python, flask]
-    dependencies: [postgres, redis]
+    dependencies: [postgres, the-feeder]
 
   - name: "mint"
+    type: "mint"
     github: "https://github.com/LandRegistry/mint"
     heroku: "lr-mint"
     url: "lr-mint.herokuapp.com/"
@@ -16,6 +18,7 @@ production:
     dependencies: [system-of-record]
 
   - name: "casework-frontend"
+    type: "casework-service"
     github: "https://github.com/LandRegistry/casework-frontend"
     heroku: "lr-casework-frontend"
     url: "casework.landregistryconcept.co.uk"
@@ -24,6 +27,7 @@ production:
     dependencies: [mint]
 
   - name: "property-frontend"
+    type: "gov-service"
     github: "https://github.com/LandRegistry/property-frontend"
     heroku: "lr-property-frontend"
     url: "www.gov.uk.landregistryconcept.co.uk"
@@ -32,6 +36,7 @@ production:
     dependencies: [search-api]
 
   - name: "service-frontend"
+    type: "land-service"
     github: "https://github.com/LandRegistry/service-frontend"
     heroku: "lr-service-frontend"
     url: "lr-service-frontend.herokuapp.com"
@@ -40,6 +45,7 @@ production:
     dependencies: [search-api, postgres]
 
   - name: "search-api"
+    type: search-index
     github: "https://github.com/LandRegistry/search-api"
     heroku: "lr-search-api"
     url: "lr-search-api.herokuapp.com"
@@ -48,12 +54,13 @@ production:
     dependencies: [elastic-search]
 
   - name: "the-feeder"
+    type: "queue"
     github: "https://github.com/LandRegistry/the-feeder"
     heroku: "lr-feeder-app"
     url:
     port:
     tech: [python]
-    dependencies: [redis]
+    dependencies: [redis, search-api]
 
 development:
   - name: "elastic-search-server"
