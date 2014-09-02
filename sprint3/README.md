@@ -1,6 +1,6 @@
 # Sprint 3
 
-Drawings and other artefacts to explain the architecture of the concept during sprint 3.
+Drawings and other artefacts to explain the architecture of the alpha during sprint 3.
 
 ![Request to make a change](request-to-make-a-change.jpg)
 ![Making a decision](making-a-decision.jpg)
